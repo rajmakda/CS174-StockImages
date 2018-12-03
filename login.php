@@ -68,6 +68,7 @@ _END;
     <form class="form-signin" action="login.php" method="POST">
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="inputUsername" class="sr-only">Username</label>
+      <br><br>
       <input type="text" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
