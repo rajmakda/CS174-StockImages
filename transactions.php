@@ -1,4 +1,6 @@
-
+<?php
+//Written by Kumar Vaibhav
+?>
 
 <!DOCTYPE html>
 <html>
@@ -64,7 +66,7 @@ $resultT = $conn->query($queryT);
 $rows = $resultT->num_rows;
 for ($i = 0; $i < $rows; $i++) {
     $row1 = $resultT->fetch_array(MYSQLI_NUM);
-    echo "$row1[0]";
+    
 echo <<<_END
 <div class="col-sm-3">
 <div class="img-thumbnail">
@@ -102,6 +104,7 @@ if (isset($_POST["delete"])) {
 
 ?>
 </div>
+
 </div>
 </body>
 </html>
