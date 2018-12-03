@@ -3,3 +3,4 @@
 *.zip
 authenticate.php
 setupusers.php
+uploads/
