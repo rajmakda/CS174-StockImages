@@ -1,16 +1,23 @@
 <!-- Written by Raj Makda SJSU ID: 010128222 -->
 
+<?php
+if (!isset($_COOKIE['user'])) {
+    echo "<script>alert(\"You must be logged in\");</script>";
+    echo "<script>window.location = \"home.php\";</script>";
+    exit;
+} 
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Login</title>
+    <title>Image Upload</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" media="screen" href="auth.css" />
 </head>
-<body class="text-center">
+<body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">Pixi</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +27,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
        <?php
         if (!isset($_COOKIE["user"])) {
-            echo <<<_END
+echo <<<_END
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
@@ -36,7 +43,7 @@
         </ul>
 _END;
         } else {
-            echo <<<_END
+echo <<<_END
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
@@ -65,82 +72,60 @@ _END;
         ?>
   </div>
 </nav>
-    <form class="form-signin" action="login.php" method="POST">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <label for="inputUsername" class="sr-only">Username</label>
-      <input type="text" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
-      <button class="btn btn-lg btn-primary btn-block" name="submitLogin" type="submit">Sign in</button>
-    </form>
-    
+    <div class="container-fluid">
+        <br>
+        <form method="POST" action="upload.php" enctype="multipart/form-data">
 
+            <label for="fileToUpload">Select image to upload:</label>
+            <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*"><br>
+
+            <label for="category">Enter a category for the image: </label>
+            <input type="text" name="category" id="category" placeholder="Enter a category" required><br>
+
+            <label for="source">Enter your name: </label>
+            <input type="text" name="source" id="source" placeholder="Enter your name" required><br>
+
+            <input class="btn btn-primary" type="submit" value="Upload Image" name="submit">
+        </form>
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
 </body>
 </html>
-
 <?php
+    // Create connection to MySQL
+    $conn = new mysqli("localhost", "root","","Project3");
 
-// Create connection to MySQL
-$conn = new mysqli("localhost", "root", "", "Project3");
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } 
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-if (isset($_POST["submitLogin"])) {
-    
-    $username = mysql_entities_fix_string($conn, $_POST["inputUsername"]);
-    $password = mysql_entities_fix_string($conn, $_POST["inputPassword"]);
-    $salt1 = "qm&h*";
-    $salt2 = "pg!@";
-    $token = hash('ripemd128', "$salt1$password$salt2$username");
-    authenticate($conn, $username, $token);
-}
-
-function authenticate($conn, $username, $token)
-{
-    $query = "SELECT * FROM Customers WHERE username='$username'";    
-    $result = $conn->query($query);
-    if (!$result) {
-echo <<<_END
-        <script>alert("$conn->error")</script>
-_END;
-    } else if($result->num_rows) {
-        $row = $result->fetch_array(MYSQLI_NUM);
-        $result->close();
-        if ($token == $row[4]) {
-            $cookie_name = "user";
-            $cookie_value = $username;
-            setcookie($cookie_name, $cookie_value, time() + (86400), "/");
-echo <<<_END
-        <script>
-            window.location = "images_all.php";
-        </script>
-_END;
+    if ($_FILES) {
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+        // Check if file already exists
+        if (!file_exists($target_file)) {
+            if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+                $size = getimagesize($target_file);
+                $width = $size[0];
+                $height = $size[1];
+                $sizeOfFile = $_FILES["fileToUpload"]["size"];
+                $source = $_POST["source"];
+                $category = $_POST["category"];
+                $insert_query = "INSERT INTO Images(category, width, height, size, source, image_path) VALUES ('".$category."','".$width."','".$height."','".$sizeOfFile."','".$source."','".$target_file."');";
+                $result = $conn->query($insert_query);
+                if (!$result) die ("Database access failed: " . $conn->error);
+                echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded. <br>";
+                echo "<img width=".($width/15)." height=".($height/15)." src=".$target_file."><br>";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        } else if ($_FILES["fileToUpload"]["error"] == 4) {
+            echo "Sorry, please provide a file.";
         } else {
-         echo "<script>alert('Invalid username/password combination')</script>";
+            echo "Sorry, file already exists.";
         }
-    } else {
-echo <<<_END
-        <script>alert("Invalid username/password combination")</script>
-_END;
     }
-}
-
-function mysql_entities_fix_string($connection, $string)
-{
-    return htmlentities(mysql_fix_string($connection, $string));
-}
-function mysql_fix_string($connection, $string)
-{
-    if (get_magic_quotes_gpc()) $string = stripslashes($string);
-    return $connection->real_escape_string($string);
-}
-
-
 ?>
