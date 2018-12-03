@@ -31,6 +31,7 @@ if (!isset($_COOKIE["user"])) {
     echo '<a class="nav-link" href="register.php">Register</a>';
 } else {
     echo '<a class="nav-link" href="logout.php">Logout</a>';
+    echo '<a class="nav-link" href="transactions.php">transactions</a>';
 }
 ?>
   </div>

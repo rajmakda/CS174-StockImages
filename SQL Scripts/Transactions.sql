@@ -8,3 +8,5 @@ CREATE TABLE Transactions
     (id),
     date TIMESTAMP NOT NULL
 );
+
+SELECT * FROM Transactions LEFT JOIN Images ON Transactions.imageId = Images.id WHERE Transactions.customerId = '$uuid'
