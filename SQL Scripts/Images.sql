@@ -7,3 +7,5 @@ CREATE TABLE Images (
     source VARCHAR(30),
     image_path VARCHAR(8000) NOT NULL
 );
+
+
