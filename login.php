@@ -1,3 +1,5 @@
+<!-- Written by Raj Makda SJSU ID: 010128222 -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,20 +18,36 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="images_all.php">Images <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
        <?php
         if (!isset($_COOKIE["user"])) {
-            echo '<a class="nav-link" href="login.php">Login</a>';
-            echo '<a class="nav-link" href="register.php">Register</a>';
+            echo <<<_END
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <li class="nav-item active">
+                <a class="nav-link" href="login.php">Login <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="register.php">Register <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+_END;
         } else {
             echo <<<_END
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="images_all.php">Images <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="upload.php">Upload <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
         <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
             <li class="nav-item dropdown">
                 <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
