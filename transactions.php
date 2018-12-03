@@ -101,7 +101,7 @@ $resultT = $conn->query($queryT);
 $rows = $resultT->num_rows;
 for ($i = 0; $i < $rows; $i++) {
     $row1 = $resultT->fetch_array(MYSQLI_NUM);
-    
+    // var_dump($row1);
 echo <<<_END
 <div class="col-sm-3">
 <div class="img-thumbnail">
@@ -128,15 +128,17 @@ function get_post($conn, $var)
 {
   return $conn->real_escape_string($_POST[$var]);
 }
-
 if (isset($_POST["delete"])) {
-
-    $delete_query = "DELETE FROM Transactions WHERE id='$row1[0]'";
+    deleteTransaction($conn, $_POST['image_id']);
+}
+function deleteTransaction($conn, $transactionid) {
+    $delete_query = "DELETE FROM Transactions WHERE id='$transactionid'";
     $result_query = $conn->query($delete_query);
-    if (!$result_query) die ("Database access failed: " . $conn->error);
+    if (!$result_query) die("Database access failed: " . $conn->error);
     echo "<script>alert(\"Successfully Deleted from Database\");</script>";
     header("Refresh:0; url=transactions.php");
 }
+
 
 ?>
 </div>
