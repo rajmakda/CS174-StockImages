@@ -1,5 +1,6 @@
 <?php
 //Written by Kumar Vaibhav
+//010110295
 ?>
 
 <!DOCTYPE html>
@@ -49,10 +50,10 @@
 <div class="row text-center" style="display:flex; flex-wrap:wrap;">
 <?php 
 
-//echo "<div style=\"margin-top:10%\">done</div>";
+
 
 $uname = $_COOKIE['user'];
-//echo "<div style=\"margin-top:10%\">$uname</div>";
+
 $query = "select id from Customers where username='$uname'";
 $result = $conn->query($query);
 if (!$result) die ("Database access failed: " . $conn->error);
@@ -61,6 +62,8 @@ if($result->num_rows) {
     $result->close();
     $uuid = $row[0];
 }
+
+//Query to find the images bought by a user 
 $queryT = "SELECT * FROM Transactions LEFT JOIN Images ON Transactions.imageId = Images.id WHERE Transactions.customerId = '$uuid'";
 $resultT = $conn->query($queryT);
 $rows = $resultT->num_rows;
