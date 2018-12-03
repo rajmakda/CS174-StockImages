@@ -102,7 +102,6 @@ if (isset($_POST["delete"])) {
 
 ?>
 </div>
-<a href="home.php">Back</a>
 </div>
 </body>
 </html>
