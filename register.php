@@ -24,16 +24,29 @@
         <a class="nav-link" href="images_all.php">Images <span class="sr-only">(current)</span></a>
       </li>
     </ul>
-    <?php
-    if (!isset($_COOKIE["user"])) {
-        echo '<a class="nav-link" href="login.php">Login</a>';
-        echo '<a class="nav-link" href="register.php">Register</a>';
-    } else {
-        echo '<a class="nav-link" href="logout.php">Logout</a>';
-    }
-    ?>
+       <?php
+        if (!isset($_COOKIE["user"])) {
+            echo '<a class="nav-link" href="login.php">Login</a>';
+            echo '<a class="nav-link" href="register.php">Register</a>';
+        } else {
+            echo <<<_END
+        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <li class="nav-item dropdown">
+                <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Account
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
+                    <a class="dropdown-item" href="transactions.php">My Purchases</a>
+                    <a class="dropdown-item" href="logout.php">Logout</a>
+                    <a class="dropdown-item" style="color:red" href="delete_account.php">Delete Account</a>
+                </div>
+            </li>
+        </ul>
+_END;
+        }
+        ?>
   </div>
-</nav>    
+</nav>
 <form class="form-signin" action="register.php" method="POST">
       <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
       <label for="inputFirstName" class="sr-only">First Name</label>
