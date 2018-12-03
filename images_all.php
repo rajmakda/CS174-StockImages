@@ -55,50 +55,74 @@
                 die("Connection failed: " . $conn->connect_error);
             } 
             
-            // Query to get all images from database
-            $get_all_query = "SELECT * FROM Images";
-            $result = $conn->query($get_all_query);
-            if (!$result) die ("Database access failed: " . $conn->error);
-            $columns = $result->field_count;
-            $rows = $result->num_rows;
-            for ($i = 0; $i < $rows; $i++) {
-                $row = $result->fetch_array(MYSQLI_NUM);
-                $sizeInKb = $row[4]/1000;
+            $username = $_COOKIE['user'];
+            $customerId = getUserIdFromUsername($conn, $username);
+            $imagesOfUser = getImagesOfLoggedInUser($conn, $customerId);
+            displayAllImages($conn, $imagesOfUser);
+
+            function displayAllImages($conn, $imagesOfUser) {
+                // Query to get all images from database with count of purchases
+                $get_all_query = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
+                $result = $conn->query($get_all_query);
+                if (!$result) die("Database access failed: " . $conn->error);
+                $columns = $result->field_count;
+                $rows = $result->num_rows;
+                for ($i = 0; $i < $rows; $i++) {
+                    $row = $result->fetch_array(MYSQLI_NUM);
+                    $sizeInKb = $row[4] / 1000;
 echo <<<_END
-                <div class="col-sm-3">
-                    <div class="img-thumbnail">
-                        <img class="img-fluid" src="$row[6]">
-                        <div class="caption">
-                            <h4>By $row[5]</h4>
-                        </div>
-                        <p>
-                            Category: $row[1]<br>
-                            Size: $row[2] * $row[3]<br>
-                            File Size: $sizeInKb kB<br>
-                            <form method="POST" action="images_all.php">
-                                <input type="hidden" id="image_id" name="image_id" value="$row[0]">
-                                <input type="hidden" id="image_path" name="image_path" value="$row[6]">
-                                <input type="submit" class="btn btn-primary btn-sm" name="delete" value="Delete">
-                            </form>
-                        </p>
-                    </div>
-                </div>
+                    <div class="col-sm-3">
+                        <div class="img-thumbnail">
+                            <img class="img-fluid" src="$row[6]">
+                            <div class="caption">
+                                <h4>By $row[5]</h4>
+                            </div>
+                            <p>
+                                Category: $row[1]<br>
+                                Size: $row[2] * $row[3]<br>
+                                File Size: $sizeInKb kB<br>
+                                No of purchases: $row[7]<br>
+                                <form method="POST" action="purchase.php">
+                                    <input type="hidden" id="image_id" name="image_id" value="$row[0]">
+                                    <input type="hidden" id="image_path" name="image_path" value="$row[6]">
 _END;
+                                if (in_array($row[0],$imagesOfUser)) {
+                                    echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
+                                } else {
+                                    echo '<input type="submit" class="btn btn-primary btn-sm" name="purchase" value="Purchase">';
+                                }
+echo <<<_END
+                                </form>
+                            </p>
+                        </div>
+                    </div>
+_END;
+                }
             }
 
-            // DELETE FROM DB AND DISK
-            if (isset($_POST["delete"])) {
-            $delete_query = "DELETE FROM Images WHERE id=".$_POST["image_id"];
-            $result = $conn->query($delete_query);
-            if (!$result) die ("Database access failed: " . $conn->error);
-            unlink($_POST["image_path"]);
-            echo "<script>alert(\"Successfully Deleted from Database\");</script>";
-            header("Refresh:0; url=images_all.php");
+            function getImagesOfLoggedInUser($conn, $customerId) {
+                // Get images of logged in user
+                $queryUserBoughtImages = "SELECT imageId FROM Transactions LEFT JOIN Images ON Transactions.imageId = Images.id WHERE Transactions.customerId = $customerId;";
+                $resultOfImages = $conn->query($queryUserBoughtImages);
+                if (!$resultOfImages) die("Connection Error" . $conn->error);
+                $x = $resultOfImages->num_rows;
+                $imagesOfUser = array();
+                for ($j = 0; $j < $x; $j++) {
+                    array_push($imagesOfUser, $resultOfImages->fetch_array(MYSQLI_NUM)[0]);
+                }
+                return $imagesOfUser;
+            }
 
-    }
+            function getUserIdFromUsername($conn, $username) {
+                $queryUser = "SELECT * FROM Customers WHERE username='$username'";
+                $resultOfUser = $conn->query($queryUser);
+                $row = $resultOfUser->fetch_array(MYSQLI_NUM);
+                $resultOfUser->close();
+                $customerId = $row[0];
+                return $customerId;
+            }
         ?>
         </div>
-        <a href="index.php">Back</a>
     </div>
 </body>
 </html>
