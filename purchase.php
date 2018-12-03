@@ -70,7 +70,7 @@ if (!isset($_COOKIE['user'])) {
             displayImage($imageData);
         }
     } else {
-        echo "No image selected";
+        echo '<div style="margin-top:7%">No image selected</div>';
     }
 
 }
