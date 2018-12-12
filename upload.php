@@ -18,7 +18,8 @@
                 $sizeOfFile = $_FILES["fileToUpload"]["size"];
                 $source = $_POST["source"];
                 $category = $_POST["category"];
-                $insert_query = "INSERT INTO Images(category, width, height, size, source, image_path) VALUES ('".$category."','".$width."','".$height."','".$sizeOfFile."','".$source."','".$target_file."');";
+                $price = $_POST["price"];
+                $insert_query = "INSERT INTO Images(category, width, height, size, source, image_path,price) VALUES ('".$category."','".$width."','".$height."','".$sizeOfFile."','".$source."','".$target_file."','".$price."');";
                 $result = $conn->query($insert_query);
                 if (!$result) die ("Database access failed: " . $conn->error);
                 echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded. <br>";

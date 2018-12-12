@@ -116,6 +116,10 @@ _END;
             <input type="text" class="form-control" name="category" id="category" placeholder="Enter a category" required>
           </div>
           <div class="form-group">
+            <label for="price" class="col-form-label">Enter a price for the image: </label>
+            <input type="number" max="25" class="form-control" name="price" id="price" placeholder="Enter a price" required>
+          </div>
+          <div class="form-group">
               <label for="source" class="col-form-label">Enter your name: </label>
         <?php
         $username = $_COOKIE['user'];
@@ -158,6 +162,7 @@ _END;
             formData.append("fileToUpload", document.getElementById('fileToUpload').files[0]);
             formData.append("source", document.getElementById('source').value);
             formData.append("category", document.getElementById('category').value);
+            formData.append("price", document.getElementById('price').value);
             fetch("upload.php", {
                 method: 'POST',
                 body: formData
