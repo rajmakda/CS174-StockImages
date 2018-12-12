@@ -4,7 +4,21 @@
     echo "<script>alert(\"You must be logged in\");</script>";
     echo "<script>window.location = \"home.php\";</script>";
     exit;
+
 }
+
+?>
+
+<?php 
+    $username = $_COOKIE['user'];
+    $conn = new mysqli("localhost", "root","","Project3");
+    //if (!$result) die("Database access failed: " . $conn->error);
+    $query_credits = "Select credits from Customers where username='$username'";
+    $result_credits = $conn->query($query_credits);
+    $col = $result_credits->field_count;
+    $row = $result_credits->num_rows;
+    $rows = $result_credits->fetch_array(MYSQLI_NUM);
+    $credits = $rows[0];
 
 ?>
 
@@ -31,7 +45,7 @@
             echo <<<_END
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="home.php"> <i class="fas fa-home fa-lg mr-1"></i>Home <span class="sr-only">(current)</span></a>
             </li>
         </ul>
         <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
@@ -47,16 +61,21 @@ _END;
             echo <<<_END
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link text-white" href="home.php">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link text-white" href="home.php"> <i class="fas fa-home fa-lg mr-1"></i>Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link text-white" href="images_all.php">Images <span class="sr-only">(current)</span></a>
+                <a class="nav-link text-white" href="images_all.php"><i class="fas fa-images mr-1 fa-lg"></i>Images <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link text-white" href="upload.php">Upload <span class="sr-only">(current)</span></a>
+                <a class="nav-link text-white" href="upload.php"> <i class="fas fa-upload mr-1 fa-lg"></i>Upload <span class="sr-only">(current)</span></a>
             </li>
+            
         </ul>
         <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+       
+            <li class="nav-item active mr-1">
+                <a class="nav-link text-white" > <i class="mr-1 mt-2 fas fa-coins fa-lg"></i>$credits <span class="sr-only">(current)</span></a>
+            </li>
             <li class="nav-item dropdown">
                 <a class=" text-white nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-user-astronaut fa-2x text-white"></i>    

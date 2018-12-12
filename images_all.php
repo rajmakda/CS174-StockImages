@@ -13,7 +13,7 @@
         <input class="form-control form-control-sm w-75" name="searchstr" id="searchstr" type="text" placeholder="Search by labels" aria-label="Search" style="border-color:#263238;"required>
     </form>
    
-     <p style="font-size:20px">Most Bought <span class="fab fa-hotjar fa-lg"></span> <small style="font-size:12px"><a href="#">View All <i class="fas fa-external-link-alt"></i></a></small></p> 
+     <p style="font-size:20px">Most Bought <span class="fab fa-hotjar fa-lg"></span> <small style="font-size:12px"><a href="hot.php">View All <i class="fas fa-external-link-alt"></i></a></small></p> 
       
      <div class="row text-center" style="display:flex; flex-wrap:wrap;"> 
   
@@ -153,7 +153,7 @@ _END;
                 // Get images of logged in user
                 $queryUserBoughtImages = "SELECT imageId FROM Transactions LEFT JOIN Images ON Transactions.imageId = Images.id WHERE Transactions.customerId = $customerId;";
                 $resultOfImages = $conn->query($queryUserBoughtImages);
-                if (!$resultOfImages) die("Connection Error" . $conn->error);
+                if (!$resultOfImages) die("Connection Error!!!" . $conn->error);
                 $x = $resultOfImages->num_rows;
                 $imagesOfUser = array();
                 for ($j = 0; $j < $x; $j++) {
