@@ -28,7 +28,7 @@
         displayAllImages1($conn1,$imagesOfUser);
         function displayAllImages1($conn, $imagesOfUser) {
             // Query to get all images from database with count of purchases
-            $get_all_query = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
+            $get_all_query = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, Images.price, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
             $result = $conn->query($get_all_query);
             if (!$result) die("Database access failed: " . $conn->error);
             $columns = $result->field_count;
@@ -36,12 +36,17 @@
             for ($i = 0; $i < $rows; $i++) {
                 $row = $result->fetch_array(MYSQLI_NUM);
                 $sizeInKb = $row[4] / 1000;
-                if ($row[7]<2) continue;
+                if ($row[8]<2) continue;
 
 echo <<<_END
                 <div class="col-sm-3 " >
                     <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded ">
+
+                        
                         <img class="img-fluid" src="$row[6]">
+                        <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
+                        
+
                         <div class="caption">
                             <h4>By $row[5]</h4>
                         </div>
@@ -49,7 +54,7 @@ echo <<<_END
                             Category: $row[1]<br>
                             Size: $row[2] * $row[3]<br>
                             File Size: $sizeInKb kB<br>
-                            No of purchases: $row[7]<br>
+                            No of purchases: $row[8]<br>
                             <form method="POST" action="purchase.php">
                                 <input type="hidden" id="image_id" name="image_id" value="$row[0]">
                                 <input type="hidden" id="image_path" name="image_path" value="$row[6]">
@@ -111,7 +116,7 @@ _END;
 //echo '<div class="row text-center" style="display:flex; flex-wrap:wrap;">';
             function displayAllImages($conn, $imagesOfUser) {
                 // Query to get all images from database with count of purchases
-                $get_all_query = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
+                $get_all_query = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, Images.price, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
                 $result = $conn->query($get_all_query);
                 if (!$result) die("Database access failed: " . $conn->error);
                 $columns = $result->field_count;
@@ -123,6 +128,8 @@ echo <<<_END
                     <div class="col-sm-3">
                         <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded">
                             <img class="img-fluid" src="$row[6]">
+                            <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
+                        
                             <div class="caption">
                                 <h4>By $row[5]</h4>
                             </div>
@@ -130,7 +137,7 @@ echo <<<_END
                                 Category: $row[1]<br>
                                 Size: $row[2] * $row[3]<br>
                                 File Size: $sizeInKb kB<br>
-                                No of purchases: $row[7]<br>
+                                No of purchases: $row[8]<br>
                                 <form method="POST" action="purchase.php">
                                     <input type="hidden" id="image_id" name="image_id" value="$row[0]">
                                     <input type="hidden" id="image_path" name="image_path" value="$row[6]">
