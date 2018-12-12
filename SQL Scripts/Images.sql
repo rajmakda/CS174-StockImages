@@ -8,6 +8,8 @@ CREATE TABLE Images (
     image_path VARCHAR(8000) NOT NULL
 );
 
+
+
 -- Gets all images with count of number of times purchased by customers
 SELECT Images.id, Images.category, Images.width, Images.height, Images.size, Images.source, Images.image_path, COUNT(Transactions.customerId) AS purchased
 FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId
