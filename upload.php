@@ -83,7 +83,10 @@ _END;
             <input type="text" name="category" id="category" placeholder="Enter a category" required><br>
 
             <label for="source">Enter your name: </label>
-            <input type="text" name="source" id="source" placeholder="Enter your name" required><br>
+        <?php
+        $username = $_COOKIE['user'];
+        echo '<input type="text" name="source" id="source" placeholder="Enter your name" value="'.$username.'" required><br>';
+        ?>
 
             <input class="btn btn-primary" type="submit" value="Upload Image" name="submit">
         </form>
@@ -91,6 +94,26 @@ _END;
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        $("document").ready(function(){   
+            $("#fileToUpload").change(function() {
+                fetch('image_recognition.php', {
+                    method: 'POST',
+                    body: document.getElementById('fileToUpload').files[0]
+                }).then(function(res) {
+                    return res.text();
+                }).catch(function(err) {
+                    console.log(err);
+                })
+                .then(function(res) {
+                    tags = res.substring(1, res.length-1)
+                    document.getElementById('category').value = tags;
+                }).catch(function(err) {
+                    console.log(err);
+                })
+            });    
+        });
+    </script>
 </body>
 </html>
 <?php
@@ -101,7 +124,6 @@ _END;
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     } 
-
     if ($_FILES) {
         $target_dir = "uploads/";
         $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
