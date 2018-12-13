@@ -38,14 +38,10 @@
                 if ($row[8]<2) continue;
 
 echo <<<_END
-                <div class="col-sm-3 " >
-                    <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded ">
-
-                        
+                <div class="col-sm-3">
+                    <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded " style="position: relative;">
                         <img class="img-fluid" src="watermarked/$row[6]">
-                        <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
-                        
-
+                        <div class="text-white" style="position:absolute;top: 14px;right: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
                         <div class="caption">
                             <h4>By $row[5]</h4>
                         </div>
@@ -125,9 +121,9 @@ _END;
                     $sizeInKb = $row[4] / 1000;
 echo <<<_END
                     <div class="col-sm-3">
-                        <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded">
+                        <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded" style="position:relative">
                             <img class="img-fluid" src="watermarked/$row[6]">
-                            <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
+                            <div class="top-right text-white" style="position:absolute;top: 4%;left: 85%;font-size: 1.5vw; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
                         
                             <div class="caption">
                                 <h4>By $row[5]</h4>
