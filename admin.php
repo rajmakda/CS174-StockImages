@@ -15,18 +15,7 @@ include 'navigation.php';
          if ($conn->connect_error) {
              die("Connection failed: " . $conn->connect_error);
          } 
-         //Enter id of all the users displayed 
-         //create a form inout a id and display the images purchased by that id 
-         //enter image id and display all the users who bught that image
-
-         //echo '<h4>All users with their ID</h4>';
-
-         //Implementing search
-        // echo '
-        //  <form class="form-inline md-form form-sm mt-0 d-flex justify-content-center" action="admin.php" method="POST">
-        //     <i class="fa fa-search fa-lg mr-2 " aria-hidden="true" style="border:none" name="btnsearch"></i>
-        //     <input class="rounded form-control form-control-sm w-50 rounded-0 mb-2" name="searchstr" id="searchstr" type="text" placeholder="Search by customer id" aria-label="Search" style="border-color:#263238;"required>
-        // </form>';
+       
      
        
 //Displaying all the users to admin
@@ -38,18 +27,13 @@ include 'navigation.php';
          $row_user = $result_allCustomers->num_rows;
          
          
-    //      echo '<table style="width:20%">
-    // <tr>
-    //     <th>Name</th>
-    //     <th>ID </th>
-    //     <th>Username</th>
-    // </tr>';
+   
          echo '
          <div class="container">
          <div class="row">
-         <div class="col">
+         <div class="col-8">
          <h4>Customers information</h4></div>
-         <div class ="col">
+         <div class ="col-4">
          <form class="form-inline md-form form-sm mt-0 d-flex justify-content-center" action="admin.php" method="POST">
             <i class="fa fa-search fa-lg mr-2 " aria-hidden="true" style="border:none" name="btnsearch"></i>
             <input class="rounded form-control form-control-sm w-50 rounded-0 mb-2" name="searchstr" id="searchstr" type="text" placeholder="Search by customer id" aria-label="Search" style="border-color:#263238;"required>
@@ -60,12 +44,14 @@ include 'navigation.php';
          <br>
          <div class="container">
          <div class="row"> ';
-        // echo '<div class=col-6">';
+        
+  
+        ;
          for($i=0;$i<$row_user;$i++){
             $rows_user = $result_allCustomers->fetch_array(MYSQLI_NUM);
             echo '
             <div class="col-sm-3 mb-2">
-            <div class="container bg-secondary text-white rounded justify-content-between align-items-center">'.$rows_user[1].' '.$rows_user[2].' @'.$rows_user[3]. ' 
+            <div class=" container bg-secondary text-white rounded justify-content-between align-items-center">'.$rows_user[1].' '.$rows_user[2].' @'.$rows_user[3]. ' 
             <span class="badge badge-dark badge-pill mt-1 float-right">ID: '.$rows_user[0].'</span></div></div>
 
             ';
@@ -92,6 +78,9 @@ include 'navigation.php';
             $columns = $result->field_count;
             $rows = $result->num_rows;
             //$row = $result->fetch_array(MYSQLI_NUM);
+            if ($rows==0) {
+                echo '<div class="container"><div class="jumbotron"><h2>No transactions</h2></div></div>';
+            }
 
  echo <<<_END
 <div class="container">
@@ -101,9 +90,6 @@ include 'navigation.php';
 _END;
 
            
-            //var_dump($rows);
-            //$imageData = $result->fetch_array(MYSQLI_NUM);
-            //displayImage($imageData);
             for ($i = 0; $i < $rows; $i++) {
                 $row = $result->fetch_array(MYSQLI_NUM);
                 $sizeInKb = $row[8] / 1000;
@@ -111,6 +97,7 @@ _END;
                     <div class="col-sm-3">
                         <div class="img-thumbnail mb-2">
                             <img class="img-fluid" src="$row[10]" >
+                            
                             <div class="caption">
                                 <h4>Source $row[9]</h4>
                             </div>
@@ -129,11 +116,22 @@ _END;
 
         
         //Display all image information to the admin
-         echo '
-         
-         <h4>Images Information</h4>
-         <div class="container">
-         <div class="row"> ';
+        echo '
+        <div class="container">
+        <div class="row">
+        <div class="col-8">
+        <h4>Images information</h4></div>
+        <div class ="col-4">
+        <form class="form-inline md-form form-sm mt-0 d-flex justify-content-center" action="admin.php" method="POST">
+           <i class="fa fa-search fa-lg mr-2 " aria-hidden="true" style="border:none" name="btnsearch"></i>
+           <input class="rounded form-control form-control-sm w-50 rounded-0 mb-2" name="searchid" id="searchid" type="text" placeholder="Search by image id" aria-label="Search" style="border-color:#263238;"required>
+       </form>
+       </div>
+       </div>
+       </div>
+        <br>
+        <div class="container">
+        <div class="row"> ';
 
         $query_displayImage = "select id, category, source from Images";
         $result_di = $conn->query($query_displayImage);
@@ -141,63 +139,83 @@ _END;
         $column_id = $result_di->field_count;
         $row_id = $result_di->num_rows;
 
-        
+       
         for($i=0;$i<$row_id;$i++){
             $rows_id = $result_di->fetch_array(MYSQLI_NUM);
 
-            echo '<div class="col-sm-3 mb-2">
-            <div class="container bg-secondary text-white rounded justify-content-between align-items-center">'.$rows_id[1].' By '.$rows_id[2]. '
+            echo '<div class="col-sm-2 mb-2 ">
+            <div class="container bg-secondary text-white rounded justify-content-between align-items-center">By '.$rows_id[2]. '
             <span class="badge badge-dark badge-pill mt-1 float-right">ID: '.$rows_id[0].'</span></div></div>
             ';
  
            }
-        
-//             <form action=admin.php method="post">
-//             Enter ID:<br>
-//             <input type="text" name = "submitImageId" id= "submitImageId" id="id_image">
-            
-//             <input type="submit"  value="Submit"><br>
-//             <br>
-//           </form>
-          
-          
-
 
           //Display transactions of a particular image
 
           
-          if(isset($_POST["submitImageId"])){
-              $imgID = mysql_entities_fix_string($conn, $_POST["submitImageId"]);
+          if(isset($_POST["searchid"])){
+              $imgID = mysql_entities_fix_string($conn, $_POST["searchid"]);
+              echo '<br><br><div class="container mt-8 mb-3"><h2>Viewing transactions<h2></div>';
               displayImgTransactions($conn, $imgID);
           }
+         
 
           function displayImgTransactions($conn, $imgID){
-              $query_disImgTran = "SELECT * FROM Customers JOIN Transactions WHERE Transactions.imageId = '$imgID'";
-              $result_disImg = $conn->query($query_disImgTran);
+              //$query_disImgTran = "SELECT * FROM Customers JOIN Transactions WHERE Transactions.imageId = '$imgID'";
+              $query_disImg = "select customerId, date from Transactions where imageId = '$imgID'";
+              $result_disImg = $conn->query($query_disImg);
               if(!$result_disImg) die ("Database access failed: " . $conn->error);
               $columnID = $result_disImg->field_count;
               $rowID = $result_disImg->num_rows;
-
-              for($i=0;$i<$rowID;$i++){
-                  $rowsID = $result_disImg->fetch_array(MYSQLI_NUM);
-                  echo <<<_END
-                  <div class="col-sm-3">
-                  <div class="img-thumbnail">
-                      <img class="img-fluid" src="$row[10]">
-                      <div class="caption">
-                          <h4>Source $row[9]</h4>
-                      </div>
-                      <p>
-                          
-                          Date of transaction:$row[3]<br>
-                          File Size: $sizeInKb kB<br>
-                      </p>
-                  </div>
-              </div>
-             
+              //$rowsID = $result_disImg->fetch_array(MYSQLI_NUM); 
+              if ($rowID==0) {
+                    echo '<div class="container"><div class="jumbotron"><h2>No transactions</h2></div></div>';
+                }else {
+                    $query2 = "select image_path, source from Images where id = '$imgID'";
+              $result2 = $conn->query($query2);
+              $columnID2 = $result2->field_count;
+              $rowID2 = $result2->num_rows;
+              $rowsID2 = $result2->fetch_array(MYSQLI_NUM);
+              echo <<<_END
+              <div class="container"> 
+              <div class="row">
+                <div class="col-4">
+                    <img class="img-fluid" src="$rowsID2[0]" style=" height: auto;width: 300px;">   
+                    <div class="caption">By $rowsID2[1]</div>
+                </div>
+                <div class="col-4">
 _END;
-              }
-          }
+                for($i=0;$i<$rowID;$i++){
+                    $rowsID = $result_disImg->fetch_array(MYSQLI_NUM); 
+                    userinfo($conn, $rowsID[0], $imgID, $rowsID);
+                }
+            }
+
+            }
+            function userinfo($conn,$userID, $imgID, $rowsID) {
+              $queryuser = "select id, FirstName, LastName, username from Customers where id = '$userID'";
+              $resultuser = $conn->query($queryuser);
+              $col = $resultuser->field_count;
+              $row = $resultuser->num_rows;
+              $r = $resultuser->fetch_array(MYSQLI_NUM);
+
+              $query2 = "select image_path from Images where id = '$imgID'";
+              $result2 = $conn->query($query2);
+              $columnID2 = $result2->field_count;
+              $rowID2 = $result2->num_rows;
+              //$rowsID2 = $result_disImg->fetch_array(MYSQLI_NUM); 
+
+              
+                  $row1 = $result2->fetch_array(MYSQLI_NUM);
+                  echo '
+                        <div class="row">Bought by</div>
+                        <div class="row">'.$r[1].' '.$r[2].'</div>
+                        <div class="row mb-2">on '.$rowsID[1].'</div>
+
+                  
+                  ';
+        }
+
           
         
 
