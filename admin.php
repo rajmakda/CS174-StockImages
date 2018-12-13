@@ -47,9 +47,9 @@ include 'navigation.php';
          echo '
          <div class="container">
          <div class="row">
-         <div class="col">
+         <div class="col-8">
          <h4>Customers information</h4></div>
-         <div class ="col">
+         <div class ="col-4">
          <form class="form-inline md-form form-sm mt-0 d-flex justify-content-center" action="admin.php" method="POST">
             <i class="fa fa-search fa-lg mr-2 " aria-hidden="true" style="border:none" name="btnsearch"></i>
             <input class="rounded form-control form-control-sm w-50 rounded-0 mb-2" name="searchstr" id="searchstr" type="text" placeholder="Search by customer id" aria-label="Search" style="border-color:#263238;"required>
@@ -130,9 +130,9 @@ _END;
         
         //Display all image information to the admin
          echo '
-         
-         <h4>Images Information</h4>
          <div class="container">
+         <h4>Images Information</h4>
+         
          <div class="row"> ';
 
         $query_displayImage = "select id, category, source from Images";
@@ -145,8 +145,8 @@ _END;
         for($i=0;$i<$row_id;$i++){
             $rows_id = $result_di->fetch_array(MYSQLI_NUM);
 
-            echo '<div class="col-sm-3 mb-2">
-            <div class="container bg-secondary text-white rounded justify-content-between align-items-center">'.$rows_id[1].' By '.$rows_id[2]. '
+            echo '<div class="col-sm-2 mb-2">
+            <div class="container bg-secondary text-white rounded justify-content-between align-items-center">By '.$rows_id[2]. '
             <span class="badge badge-dark badge-pill mt-1 float-right">ID: '.$rows_id[0].'</span></div></div>
             ';
  
