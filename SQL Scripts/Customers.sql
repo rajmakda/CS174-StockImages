@@ -3,7 +3,8 @@ CREATE TABLE Customers (
     FirstName VARCHAR(32) NOT NULL,
     LastName VARCHAR(32) NOT NULL,
     username VARCHAR(32) NOT NULL UNIQUE,
-    password VARCHAR(32) NOT NULL
+    password VARCHAR(32) NOT NULL,
+    credits int(4) NOT NULL DEFAULT 10
 );
 
  // - find all customers who purchased a given image (by id).

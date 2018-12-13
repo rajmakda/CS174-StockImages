@@ -4,3 +4,5 @@
 authenticate.php
 setupusers.php
 uploads/
+vendor/
+Screenshots of DB queries
