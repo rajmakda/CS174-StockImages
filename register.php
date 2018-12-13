@@ -67,18 +67,23 @@ _END;
         ?>
   </div>
 </nav>
-<form class="form-signin" action="register.php" method="POST">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
-      <label for="inputFirstName" class="sr-only">First Name</label>
-      <input type="text" name="inputFirstName" id="inputFirstName" class="form-control" placeholder="First Name" required autofocus>
-      <label for="inputLastName" class="sr-only">Last Name</label>
-      <input type="text" name="inputLastName" id="inputLastName" class="form-control" placeholder="Last Name" required autofocus>
-      <label for="inputUsername" class="sr-only">Username</label>
-      <input type="text" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
-      <button class="btn btn-lg btn-primary btn-block" name="submitSignup" type="submit">Sign in</button>
-    </form>
+
+<div style="background-image: url('https://i.pinimg.com/originals/03/10/b8/0310b82f8ade9a5172ab00ea53bb45b3.png'); background-size: cover; height:100vh; width:100%">
+    <div style="margin:auto; text-align: center; position: relative; top: 30%;color: white; ">
+        <form class="form-signin" action="register.php" method="POST">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
+            <label for="inputFirstName" class="sr-only">First Name</label>
+            <input type="text" name="inputFirstName" id="inputFirstName" class="form-control" placeholder="First Name" required autofocus>
+            <label for="inputLastName" class="sr-only">Last Name</label>
+            <input type="text" name="inputLastName" id="inputLastName" class="form-control" placeholder="Last Name" required autofocus>
+            <label for="inputUsername" class="sr-only">Username</label>
+            <input type="text" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
+            <button class="btn btn-lg btn-dark btn-block" name="submitSignup" type="submit">Sign up</button>
+            </form>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
