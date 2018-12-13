@@ -30,7 +30,7 @@
             $row = $result->fetch_array(MYSQLI_NUM);
             //strpos($row[1], $search) ==true;
             //strtolower($row[1])==$search
-            if(strtolower($row[1])==$search or strtolower($row[5])==$search or strpos(strtolower($row[1]), $search) ==true){
+            if(strtolower($row[1])==strtolower($search) or strtolower($row[5])==strtolower($search) or strpos(strtolower($row[1]), strtolower($search)) ==true){
                 $flag=true;
                 $sizeInKb = $row[4] / 1000;
                 echo <<<_END

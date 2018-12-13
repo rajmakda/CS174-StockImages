@@ -162,7 +162,6 @@ _END;
                                 if ($row[5]!=$_COOKIE['user']){
                                 if (in_array($row[0],$imagesOfUser)) {
                                     echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
-                                   
                                     reduceCredit($conn, $row[7], $username); 
                                  
                                 } else {
@@ -202,5 +201,4 @@ _END;
         ?>
         </div>
     </div>
-</body>
-</html>
+  

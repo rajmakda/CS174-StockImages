@@ -12,15 +12,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
 </head>
-<<<<<<< HEAD
-<body class="text-center" >
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Pixi</a>
-=======
 <body class="text-center">
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-dark">
   <a class="navbar-brand text-white" href="#">Pixi</a>
->>>>>>> fe20db193506795870c61c7832385032dfa8b704
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
