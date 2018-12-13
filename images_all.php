@@ -23,10 +23,9 @@
         $username = $_COOKIE['user'];
         $customerId = getUserIdFromUsername($conn1, $username);
         $imagesOfUser = getImagesOfLoggedInUser($conn1, $customerId);
-
-
-        displayAllImages1($conn1,$imagesOfUser, $username);
-        function displayAllImages1($conn, $imagesOfUser, $username) {
+        $userCredits = getCustomerCredits($conn, $username);
+        displayAllImages1($conn1,$imagesOfUser, $userCredits);
+        function displayAllImages1($conn, $imagesOfUser, $userCredits) {
             // Query to get all images from database with count of purchases
             $get_all_query = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, Images.price, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
             $result = $conn->query($get_all_query);
@@ -43,7 +42,7 @@ echo <<<_END
                     <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded ">
 
                         
-                        <img class="img-fluid" src="$row[6]">
+                        <img class="img-fluid" src="watermarked/$row[6]">
                         <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
                         
 
@@ -58,11 +57,14 @@ echo <<<_END
                             <form method="POST" action="purchase.php">
                                 <input type="hidden" id="image_id" name="image_id" value="$row[0]">
                                 <input type="hidden" id="image_path" name="image_path" value="$row[6]">
+                                <input type="hidden" id="image_price" name="image_price" value="$row[7]">
+                                <input type="hidden" id="user_credits" name="user_credits" value="$userCredits">
 _END;
                             if ($row[5]!=$_COOKIE['user']){
                             if (in_array($row[0],$imagesOfUser)) {
                                 echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
-                                reduceCredit($conn, $row[7], $username);
+                            } else if (!checkEnoughCredits($row[7], $userCredits)) {
+                                    echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Not Enough Credits">';
                             } else {
                                 echo '<input type="submit" class="btn btn-primary btn-sm" name="purchase" value="Purchase">';
                             }
@@ -88,31 +90,14 @@ _END;
         {
             if (get_magic_quotes_gpc()) $string = stripslashes($string);
             return $connection->real_escape_string($string);
-        }
-
-        function reduceCredit($conn, $price, $username){
-
-            //$price1 = $_COOKIE["credit"];
-            $query_getcredit = "Select credits from Customers where username='$username'";
-            $result_credit = $conn->query($query_getcredit);
-            $row = $result_credit->fetch_array(MYSQLI_NUM);
-            $creditRemaining = $row[0]-$price;
-            echo  $creditRemaining;
-            $querycredit = "update Customers set credits = '$creditRemaining' where username= '$username'";
-            $resultcredit = $conn->query($querycredit);
-
-        }
-                
+        }                
     ?>
 
 
      </div>
      <p style="font-size:24px">All Images</p>
     <!------------------------------------------------------------------------------------------------------------------>
-    <div class="row text-center" style="display:flex; flex-wrap:wrap;">
-
-        
-        
+    <div class="row text-center" style="display:flex; flex-wrap:wrap;">        
         <?php 
              // Create connection to MySQL
             $conn = new mysqli("localhost", "root","","Project3");
@@ -125,12 +110,10 @@ _END;
             $username = $_COOKIE['user'];
             $customerId = getUserIdFromUsername($conn, $username);
             $imagesOfUser = getImagesOfLoggedInUser($conn, $customerId);
-
-            //echo 'Most <br><br> ';
+            $userCredits = getCustomerCredits($conn, $username);
            
-            displayAllImages($conn, $imagesOfUser, $username);
-//echo '<div class="row text-center" style="display:flex; flex-wrap:wrap;">';
-            function displayAllImages($conn, $imagesOfUser, $username) {
+            displayAllImages($conn, $imagesOfUser, $userCredits);
+            function displayAllImages($conn, $imagesOfUser, $userCredits) {
                 // Query to get all images from database with count of purchases
                 $get_all_query = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, Images.price, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
                 $result = $conn->query($get_all_query);
@@ -143,7 +126,7 @@ _END;
 echo <<<_END
                     <div class="col-sm-3">
                         <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded">
-                            <img class="img-fluid" src="$row[6]">
+                            <img class="img-fluid" src="watermarked/$row[6]">
                             <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
                         
                             <div class="caption">
@@ -157,13 +140,15 @@ echo <<<_END
                                 <form method="POST" action="purchase.php">
                                     <input type="hidden" id="image_id" name="image_id" value="$row[0]">
                                     <input type="hidden" id="image_path" name="image_path" value="$row[6]">
+                                    <input type="hidden" id="image_price" name="image_price" value="$row[7]">
+                                    <input type="hidden" id="user_credits" name="user_credits" value="$userCredits">
 _END;
                                 //username from userid ask raj the source is username
                                 if ($row[5]!=$_COOKIE['user']){
                                 if (in_array($row[0],$imagesOfUser)) {
                                     echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
-                                    reduceCredit($conn, $row[7], $username); 
-                                 
+                                } else if (!checkEnoughCredits($row[7], $userCredits)) {
+                                    echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Not Enough Credits">';
                                 } else {
                                     echo '<input type="submit" class="btn btn-primary btn-sm" name="purchase" value="Purchase">';
                                 }
@@ -197,6 +182,23 @@ _END;
                 $resultOfUser->close();
                 $customerId = $row[0];
                 return $customerId;
+            }
+
+            function getCustomerCredits($conn, $username) {
+                $queryUser = "SELECT credits FROM Customers WHERE username='$username'";
+                $result = $conn->query($queryUser);
+                $row = $result->fetch_array(MYSQLI_NUM);
+                $result->close();
+                $credits = $row[0];
+                return $credits;
+            }
+
+            function checkEnoughCredits($imagePrice, $userCredits) {
+                if ($userCredits < $imagePrice) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
         ?>
         </div>
