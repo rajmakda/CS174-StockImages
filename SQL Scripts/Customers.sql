@@ -6,3 +6,8 @@ CREATE TABLE Customers (
     password VARCHAR(32) NOT NULL,
     credits int(4) NOT NULL DEFAULT 10
 );
+
+ // - find all customers who purchased a given image (by id).
+
+SELECT c.id, c.FirstName, c.LastName, c.username, t.imageId, t.date
+FROM Customers AS c JOIN Transactions AS t WHERE t.imageId = '$imageId' ;

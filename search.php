@@ -21,15 +21,16 @@
 
     function searchResults($conn, $search, $imagesOfUser){
         $flag=false;
-        $get_all_query = "SELECT Images.id, Images.category, Images.width, Images.height, Images.size, Images.source, Images.image_path, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
+        $get_all_query = "SELECT Images.id, Images.category, Images.width, Images.height, Images.size, Images.source, Images.image_path, Images.price, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
         $result = $conn->query($get_all_query);
         if (!$result) die("Database access failed: " . $conn->error);
         $columns = $result->field_count;
         $rows = $result->num_rows;
         for ($i = 0; $i < $rows; $i++) {
             $row = $result->fetch_array(MYSQLI_NUM);
-
-            if(strtolower($row[1])==$search or strtolower($row[5])==$search){
+            //strpos($row[1], $search) ==true;
+            //strtolower($row[1])==$search
+            if(strtolower($row[1])==strtolower($search) or strtolower($row[5])==strtolower($search) or strpos(strtolower($row[1]), strtolower($search)) ==true){
                 $flag=true;
                 $sizeInKb = $row[4] / 1000;
                 echo <<<_END
@@ -45,7 +46,7 @@
                 Category: $row[1]<br>
                 Size: $row[2] * $row[3]<br>
                 File Size: $sizeInKb kB<br>
-                No of purchases: $row[7]<br>
+                No of purchases: $row[8]<br>
                 <form method="POST" action="purchase.php">
                 <input type="hidden" id="image_id" name="image_id" value="$row[0]">
                 <input type="hidden" id="image_path" name="image_path" value="$row[6]">
@@ -75,68 +76,6 @@ _END;
 }
     
     
-
-//     function searchResults($conn, $search, $imagesOfUser) {
-//         $query = "Select category, width, height, size, source, image_path from Images where category='$search' or source='$search'";
-//         //SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;
-//         $result = $conn->query($query);
-//         $col = $result->field_count;
-//         $row = $result->num_rows;
-        
-//         if ($row<1) {
-//             echo '<div class="jumbotron">
-//                   <h1>404 your search could not find any result</h1>
-//                   Try searching for labels like nature, abstract, potrait...
-//                   </div>
-//                   <form class="form-inline md-form form-sm mt-0 d-flex justify-content-center" action="search.php" method="POST">
-//                     <button class="fa fa-search fa-lg" aria-hidden="true" style="border:none" name="btnsearch"></button>
-//                     <input class="form-control form-control-sm w-75" name="searchstr" id="searchstr" type="text" placeholder="Search by labels or names" aria-label="Search" required>
-//                 </form>
-//             ';
-//         }
-        
-//         else {
-//             echo '<div class="row text-center" style="display:flex; flex-wrap:wrap;">';
-//             $querys = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
-//             $results = $conn->query($querys);
-//             $column = $results->field_count;
-//             $row1 = $results->num_rows;
-//             for ($i = 0; $i < $row1; $i++) {
-//                 $rows=$result->fetch_array(MYSQLI_NUM);
-//                 $sizeInKb = $rows[3]/1000;
-//                 var_dump($rows);
-//                 echo <<<_END
-//                 <div class="col-sm-3">
-//                     <div class="img-thumbnail">
-//                         <img class="img-fluid" src="$rows[5]">
-//                         <div class="caption">
-//                             <h4>By $row[5]</h4>
-//                         </div>
-//                         <p>
-//                             Category: $row[1]<br>
-//                             Size: $row[2] * $row[3]<br>
-//                             File Size: $sizeInKb kB<br>
-//                             No of purchases: $row[7]<br>
-//                             <form method="POST" action="purchase.php">
-//                                 <input type="hidden" id="image_id" name="image_id" value="$rows[0]">
-//                                 <input type="hidden" id="image_path" name="image_path" value="$rows[6]">
-// _END;
-//                             if (in_array($row[0],$imagesOfUser)) {
-//                                 echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
-//                             } else {
-//                                 echo '<input type="submit" class="btn btn-primary btn-sm" name="purchase" value="Purchase">';
-//                             }
-// echo <<<_END
-//                             </form>
-//                         </p>
-//                     </div>
-//                 </div>
-// _END;
-//             }
-//         }
-
-
-//     }
 
 
     echo '</div>';
