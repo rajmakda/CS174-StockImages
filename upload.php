@@ -1,4 +1,5 @@
 <?php
+// Written by Raj Makda SJSU ID: 010128222
     require('image.php');
     // Create connection to MySQL
     $conn = new mysqli("localhost", "root","","Project3");

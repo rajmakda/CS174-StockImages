@@ -1,4 +1,5 @@
 <?php
+    // Written by Raj Makda SJSU ID: 010128222
     require 'vendor/autoload.php';
     putenv('HOME=/opt/lampp/htdocs');
     use Aws\Rekognition\RekognitionClient;
