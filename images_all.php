@@ -25,8 +25,8 @@
         $imagesOfUser = getImagesOfLoggedInUser($conn1, $customerId);
 
 
-        displayAllImages1($conn1,$imagesOfUser);
-        function displayAllImages1($conn, $imagesOfUser) {
+        displayAllImages1($conn1,$imagesOfUser, $username);
+        function displayAllImages1($conn, $imagesOfUser, $username) {
             // Query to get all images from database with count of purchases
             $get_all_query = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, Images.price, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
             $result = $conn->query($get_all_query);
@@ -59,11 +59,14 @@ echo <<<_END
                                 <input type="hidden" id="image_id" name="image_id" value="$row[0]">
                                 <input type="hidden" id="image_path" name="image_path" value="$row[6]">
 _END;
+                            if ($row[5]!=$_COOKIE['user']){
                             if (in_array($row[0],$imagesOfUser)) {
                                 echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
+                                reduceCredit($conn, $row[7], $username);
                             } else {
                                 echo '<input type="submit" class="btn btn-primary btn-sm" name="purchase" value="Purchase">';
                             }
+                        }
 echo <<<_END
                             </form>
                         </p>
@@ -86,12 +89,25 @@ _END;
             if (get_magic_quotes_gpc()) $string = stripslashes($string);
             return $connection->real_escape_string($string);
         }
+
+        function reduceCredit($conn, $price, $username){
+
+            //$price1 = $_COOKIE["credit"];
+            $query_getcredit = "Select credits from Customers where username='$username'";
+            $result_credit = $conn->query($query_getcredit);
+            $row = $result_credit->fetch_array(MYSQLI_NUM);
+            $creditRemaining = $row[0]-$price;
+            echo  $creditRemaining;
+            $querycredit = "update Customers set credits = '$creditRemaining' where username= '$username'";
+            $resultcredit = $conn->query($querycredit);
+
+        }
                 
     ?>
 
 
      </div>
-     <p><h3>All Images</h3></p>
+     <p style="font-size:24px">All Images</p>
     <!------------------------------------------------------------------------------------------------------------------>
     <div class="row text-center" style="display:flex; flex-wrap:wrap;">
 
@@ -112,9 +128,9 @@ _END;
 
             //echo 'Most <br><br> ';
            
-            displayAllImages($conn, $imagesOfUser);
+            displayAllImages($conn, $imagesOfUser, $username);
 //echo '<div class="row text-center" style="display:flex; flex-wrap:wrap;">';
-            function displayAllImages($conn, $imagesOfUser) {
+            function displayAllImages($conn, $imagesOfUser, $username) {
                 // Query to get all images from database with count of purchases
                 $get_all_query = "SELECT Images.id, Images.category,Images.width, Images.height, Images.size, Images.source, Images.image_path, Images.price, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
                 $result = $conn->query($get_all_query);
@@ -142,11 +158,17 @@ echo <<<_END
                                     <input type="hidden" id="image_id" name="image_id" value="$row[0]">
                                     <input type="hidden" id="image_path" name="image_path" value="$row[6]">
 _END;
+                                //username from userid ask raj the source is username
+                                if ($row[5]!=$_COOKIE['user']){
                                 if (in_array($row[0],$imagesOfUser)) {
                                     echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
+                                   
+                                    reduceCredit($conn, $row[7], $username); 
+                                 
                                 } else {
                                     echo '<input type="submit" class="btn btn-primary btn-sm" name="purchase" value="Purchase">';
                                 }
+                            }
 echo <<<_END
                                 </form>
                             </p>

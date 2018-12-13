@@ -116,7 +116,11 @@ _END;
         if ($token == $row[4]) {
             $cookie_name = "user";
             $cookie_value = $username;
+            $cookie_credit = $row[5];
+            setcookie("credit", $cookie_credit, time() + (86400), "/");
             setcookie($cookie_name, $cookie_value, time() + (86400), "/");
+            
+            
 echo <<<_END
         <script>
             window.location = "images_all.php";
