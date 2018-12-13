@@ -37,8 +37,6 @@ if (isset($_POST['purchase'])) {
     echo '<div style="margin-top:7%">No image selected</div>';
 }
 
-
-
 function displayImage($row) {
     $sizeInKb = $row[4] / 1000;
 echo <<<_END

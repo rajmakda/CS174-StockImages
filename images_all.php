@@ -24,7 +24,6 @@
         $customerId = getUserIdFromUsername($conn1, $username);
         $imagesOfUser = getImagesOfLoggedInUser($conn1, $customerId);
         $userCredits = getCustomerCredits($conn, $username);
-
         displayAllImages1($conn1,$imagesOfUser, $userCredits);
         function displayAllImages1($conn, $imagesOfUser, $userCredits) {
             // Query to get all images from database with count of purchases
@@ -61,6 +60,7 @@ echo <<<_END
                                 <input type="hidden" id="image_price" name="image_price" value="$row[7]">
                                 <input type="hidden" id="user_credits" name="user_credits" value="$userCredits">
 _END;
+                            if ($row[5]!=$_COOKIE['user']){
                             if (in_array($row[0],$imagesOfUser)) {
                                 echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
                             } else if (!checkEnoughCredits($row[7], $userCredits)) {
@@ -68,6 +68,7 @@ _END;
                             } else {
                                 echo '<input type="submit" class="btn btn-primary btn-sm" name="purchase" value="Purchase">';
                             }
+                        }
 echo <<<_END
                             </form>
                         </p>
@@ -89,13 +90,12 @@ _END;
         {
             if (get_magic_quotes_gpc()) $string = stripslashes($string);
             return $connection->real_escape_string($string);
-        }
-                
+        }                
     ?>
 
 
      </div>
-     <p><h3>All Images</h3></p>
+     <p style="font-size:24px">All Images</p>
     <!------------------------------------------------------------------------------------------------------------------>
     <div class="row text-center" style="display:flex; flex-wrap:wrap;">        
         <?php 
@@ -143,6 +143,8 @@ echo <<<_END
                                     <input type="hidden" id="image_price" name="image_price" value="$row[7]">
                                     <input type="hidden" id="user_credits" name="user_credits" value="$userCredits">
 _END;
+                                //username from userid ask raj the source is username
+                                if ($row[5]!=$_COOKIE['user']){
                                 if (in_array($row[0],$imagesOfUser)) {
                                     echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
                                 } else if (!checkEnoughCredits($row[7], $userCredits)) {
@@ -150,6 +152,7 @@ _END;
                                 } else {
                                     echo '<input type="submit" class="btn btn-primary btn-sm" name="purchase" value="Purchase">';
                                 }
+                            }
 echo <<<_END
                                 </form>
                             </p>

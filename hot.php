@@ -31,7 +31,7 @@ function displayAllImages1($conn, $imagesOfUser) {
             for ($i = 0; $i < $rows; $i++) {
                 $row = $result->fetch_array(MYSQLI_NUM);
                 $sizeInKb = $row[4] / 1000;
-                if ($row[7]<2) continue;
+                if ($row[8]<2) continue;
 
 echo <<<_END
                 <div class="col-sm-3 " >
@@ -51,11 +51,13 @@ echo <<<_END
                                 <input type="hidden" id="image_id" name="image_id" value="$row[0]">
                                 <input type="hidden" id="image_path" name="image_path" value="$row[6]">
 _END;
+                            if ($row[5]!=$_COOKIE['user']){
                             if (in_array($row[0],$imagesOfUser)) {
                                 echo '<input type="submit" disabled class="btn btn-primary btn-sm" name="purchase" value="Purchased">';
                             } else {
                                 echo '<input type="submit" class="btn btn-primary btn-sm" name="purchase" value="Purchase">';
                             }
+                        }
 echo <<<_END
                             </form>
                         </p>
