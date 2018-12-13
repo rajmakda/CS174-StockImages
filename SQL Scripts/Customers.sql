@@ -3,15 +3,6 @@ CREATE TABLE Customers (
     FirstName VARCHAR(32) NOT NULL,
     LastName VARCHAR(32) NOT NULL,
     username VARCHAR(32) NOT NULL UNIQUE,
-    password VARCHAR(32) NOT NULL
-);
-
-
-CREATE TABLE Customers (
-    id INT(6) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    FirstName VARCHAR(32) NOT NULL,
-    LastName VARCHAR(32) NOT NULL,
-    username VARCHAR(32) NOT NULL UNIQUE,
     password VARCHAR(32) NOT NULL,
-    credits int(4) default 10
+    credits int(4) NOT NULL DEFAULT 10
 );
