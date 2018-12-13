@@ -136,19 +136,5 @@
         header('Content-type: image/jpeg');
         imagejpeg($this->image);
     }
-}
-
-    // Runs composition for 2 images by underlay
-   $imageA = new Image('images/ocean.jpg');
-   $imageB = new Image('images/shark.png');
-   $imageA->composite($imageB, 100,100,"images/ocean-shark.jpeg");
-    // Runs composition for 2 images by overlay (underlay = false)
-   $imageC = new Image('images/desert.jpg');
-   $imageD = new Image('images/eiffel.png');
-   $imageD->composite($imageC, 500,100,"images/desert-eiffel.jpg",false);
-    // Grays scales an image
-   $imageE = new Image('images/smallest.jpg');
-   $imageE->grayscale(2);
-   $imageE->displayImage();
-   
+}   
 ?>

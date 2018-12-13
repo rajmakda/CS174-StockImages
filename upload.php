@@ -1,4 +1,5 @@
 <?php
+    require('image.php');
     // Create connection to MySQL
     $conn = new mysqli("localhost", "root","","Project3");
 
@@ -22,6 +23,11 @@
                 $insert_query = "INSERT INTO Images(category, width, height, size, source, image_path,price) VALUES ('".$category."','".$width."','".$height."','".$sizeOfFile."','".$source."','".$target_file."','".$price."');";
                 $result = $conn->query($insert_query);
                 if (!$result) die ("Database access failed: " . $conn->error);
+                $logo = new Image('resources/logo.png');
+                $im = new Image($target_file);
+                $heightOffSet = ($height/2)-($logo->size[1]/2);
+                $widthOffSet = ($width/2)-($logo->size[0]/2);
+                $im->composite($logo, $widthOffSet,$heightOffSet);
                 echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded. <br>";
                 echo "<img width=".($width/15)." height=".($height/15)." src=".$target_file."><br>";
             } else {
