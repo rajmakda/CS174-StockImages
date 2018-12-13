@@ -37,7 +37,7 @@
                 <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded" style="background-color:transparent">
                 <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
 
-                <img class="img-fluid" src="$row[6]" >
+                <img class="img-fluid" src="watermarked/$row[6]" >
                 <div class="caption" >
                 <h4>By $row[5]</h4>
                 </div>

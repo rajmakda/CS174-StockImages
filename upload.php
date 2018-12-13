@@ -28,7 +28,7 @@
                 $im = new Image($target_file);
                 $heightOffSet = ($height/2)-($logo->size[1]/2);
                 $widthOffSet = ($width/2)-($logo->size[0]/2);
-                $im->composite($logo, $widthOffSet,$heightOffSet);
+                $im->composite($logo, $widthOffSet,$heightOffSet, "watermarked/".$target_file);
                 echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded. <br>";
                 echo "<img width=".($width/15)." height=".($height/15)." src=".$target_file."><br>";
             } else {
