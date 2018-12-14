@@ -35,7 +35,7 @@ function displayAllImages1($conn, $imagesOfUser) {
 
 echo <<<_END
                 <div class="col-sm-3 " >
-                    <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded ">
+                    <div class="img-thumbnail shadow-lg p-1 mb-5 bg-white rounded ">
                         <img class="img-fluid" src="$row[6]">
                         <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
 

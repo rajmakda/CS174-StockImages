@@ -35,7 +35,7 @@
                 $sizeInKb = $row[4] / 1000;
                 echo <<<_END
                 <div class="col-sm-3" >
-                <div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded" style="background-color:transparent">
+                <div class="img-thumbnail shadow-lg p-1 mb-5 bg-white rounded" style="background-color:transparent">
                 <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
 
                 <img class="img-fluid" src="watermarked/$row[6]" >

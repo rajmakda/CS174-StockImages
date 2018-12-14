@@ -31,7 +31,7 @@ for ($i = 0; $i < $rows; $i++) {
     // var_dump($row1);
 echo <<<_END
 <div class="col-sm-3">
-<div class="img-thumbnail shadow-lg p-3 mb-5 bg-white rounded"">
+<div class="img-thumbnail shadow-lg p-1 mb-5 bg-white rounded"">
     <img class="img-fluid" src="$row1[10]">
     <div class="caption">
         <h4>By $row1[9]</h4>
