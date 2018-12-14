@@ -28,11 +28,10 @@
         $rows = $result->num_rows;
         for ($i = 0; $i < $rows; $i++) {
             $row = $result->fetch_array(MYSQLI_NUM);
-            //strpos($row[1], $search) ==true;
-            //strtolower($row[1])==$search
             if(strtolower($row[1])==strtolower($search) or strtolower($row[5])==strtolower($search) or strpos(strtolower($row[1]), strtolower($search)) ==true){
                 $flag=true;
                 $sizeInKb = $row[4] / 1000;
+                $tags = explode(",", str_replace('"', "", $row[1]));
                 echo <<<_END
                 <div class="col-sm-3" >
                 <div class="img-thumbnail shadow-lg p-1 mb-5 bg-white rounded" style="background-color:transparent">
@@ -43,7 +42,12 @@
                 <h4>By $row[5]</h4>
                 </div>
                 <p >
-                Category: $row[1]<br>
+_END;
+                for($j=0;$j<count($tags);$j++) {
+                    echo '<span class="badge badge-pill badge-secondary">'.$tags[$j].'</span>';
+                }
+echo <<<_END
+                <br>
                 Size: $row[2] * $row[3]<br>
                 File Size: $sizeInKb kB<br>
                 No of purchases: $row[8]<br>

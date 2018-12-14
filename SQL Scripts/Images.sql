@@ -1,11 +1,12 @@
 CREATE TABLE Images (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,    
-    category VARCHAR(30),
+    category VARCHAR(3000),
     width INT NOT NULL,
     height INT NOT NULL,
     size INT NOT NULL,
-    source VARCHAR(30),
-    image_path VARCHAR(8000) NOT NULL
+    source VARCHAR(3000),
+    image_path VARCHAR(8000) NOT NULL,
+    price INT NOT NULL
 );
 
 -- Gets all images with count of number of times purchased by customers
