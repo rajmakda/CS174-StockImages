@@ -28,7 +28,7 @@ $resultT = $conn->query($queryT);
 $rows = $resultT->num_rows;
 for ($i = 0; $i < $rows; $i++) {
     $row1 = $resultT->fetch_array(MYSQLI_NUM);
-    // var_dump($row1);
+    $tags = explode(",", str_replace('"', "", $row1[5]));
 echo <<<_END
 <div class="col-sm-3">
 <div class="img-thumbnail shadow-lg p-1 mb-5 bg-white rounded"">
@@ -37,7 +37,12 @@ echo <<<_END
         <h4>By $row1[9]</h4>
     </div>
     <p>
-        Category: $row1[5]<br>
+_END;
+    for ($j = 0; $j < count($tags); $j++) {
+        echo '<span class="badge badge-pill badge-secondary">' . $tags[$j] . '</span>';
+    }
+    echo <<<_END
+                <br>
         Size: $row1[6] * $row1[7]<br>
         <form method="POST" action="transactions.php">
             <input type="hidden" id="image_id" name="image_id" value="$row1[0]">

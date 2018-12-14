@@ -36,7 +36,7 @@
                 $row = $result->fetch_array(MYSQLI_NUM);
                 $sizeInKb = $row[4] / 1000;
                 if ($row[8]<2) continue;
-
+                $tags = explode(",", str_replace('"', "", $row[1]));
 echo <<<_END
                 <div class="col-sm-3 " >
                     <div class="img-thumbnail shadow-lg p-1 mb-5 bg-white rounded " style="position: relative;">
@@ -46,7 +46,12 @@ echo <<<_END
                             <h4>By $row[5]</h4>
                         </div>
                         <p>
-                            Category: $row[1]<br>
+_END;
+                            for($j=0;$j<count($tags);$j++) {
+                                echo '<span class="badge badge-pill badge-secondary">'.$tags[$j].'</span>';
+                            }
+echo <<<_END
+                                <br>
                             Size: $row[2] * $row[3]<br>
                             File Size: $sizeInKb kB<br>
                             No of purchases: $row[8]<br>
@@ -119,6 +124,7 @@ _END;
                 for ($i = 0; $i < $rows; $i++) {
                     $row = $result->fetch_array(MYSQLI_NUM);
                     $sizeInKb = $row[4] / 1000;
+                    $tags = explode(",", str_replace('"',"",$row[1]));
 echo <<<_END
                     <div class="col-sm-3">
                         <div class="img-thumbnail shadow-lg p-1 mb-5 bg-white rounded" style="position:relative">
@@ -129,7 +135,12 @@ echo <<<_END
                                 <h4>By $row[5]</h4>
                             </div>
                             <p>
-                                Category: $row[1]<br>
+_END;
+                            for($j=0;$j<count($tags);$j++) {
+                                echo '<span class="badge badge-pill badge-secondary">'.$tags[$j].'</span>';
+                            }
+echo <<<_END
+                                <br>
                                 Size: $row[2] * $row[3]<br>
                                 File Size: $sizeInKb kB<br>
                                 No of purchases: $row[8]<br>

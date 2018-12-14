@@ -39,6 +39,7 @@ if (isset($_POST['purchase'])) {
 
 function displayImage($row) {
     $sizeInKb = $row[4] / 1000;
+    $tags = explode(",", str_replace('"', "", $row[1]));
 echo <<<_END
     <div style="position:absolute;left:0;right:0;top:10%;bottom:0;margin:auto;text-align: center">
         
@@ -52,7 +53,12 @@ echo <<<_END
                     <h4>By $row[5]</h4>
                 </div>
                 <p>
-                    Category: $row[1]<br>
+_END;
+    for ($j = 0; $j < count($tags); $j++) {
+        echo '<span class="badge badge-pill badge-secondary">' . $tags[$j] . '</span>';
+    }
+    echo <<<_END
+                <br>
                     Size: $row[2] * $row[3]<br>
                     File Size: $sizeInKb kB<br>
                 </p>
