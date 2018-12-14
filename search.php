@@ -17,9 +17,10 @@
     $username = $_COOKIE['user'];
     $customerId = getUserIdFromUsername($conn, $username);
     $imagesOfUser = getImagesOfLoggedInUser($conn, $customerId);
-    searchResults($conn,$search,$imagesOfUser);
+    $userCredits = getCustomerCredits($conn, $username);
+    searchResults($conn,$search,$imagesOfUser, $userCredits);
 
-    function searchResults($conn, $search, $imagesOfUser){
+    function searchResults($conn, $search, $imagesOfUser, $userCredits){
         $flag=false;
         $get_all_query = "SELECT Images.id, Images.category, Images.width, Images.height, Images.size, Images.source, Images.image_path, Images.price, COUNT(Transactions.customerId) AS purchased FROM Images LEFT JOIN Transactions ON Images.id=Transactions.imageId  GROUP BY Images.id ORDER BY purchased DESC;";
         $result = $conn->query($get_all_query);
@@ -35,7 +36,7 @@
                 echo <<<_END
                 <div class="col-sm-3" >
                 <div class="img-thumbnail shadow-lg p-1 mb-5 bg-white rounded" style="background-color:transparent">
-                <div class="top-right text-white" style="position:absolute;top: 14px;left: 290px;font-size: 20px; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
+                <div class="top-right text-white" style="position:absolute;top: 4%;left: 85%;font-size: 1.5vw; "><i class="fas fa-dollar-sign"></i>$row[7]</div>
 
                 <img class="img-fluid" src="watermarked/$row[6]" >
                 <div class="caption" >
@@ -54,6 +55,8 @@ echo <<<_END
                 <form method="POST" action="purchase.php">
                 <input type="hidden" id="image_id" name="image_id" value="$row[0]">
                 <input type="hidden" id="image_path" name="image_path" value="$row[6]">
+                <input type="hidden" id="image_price" name="image_price" value="$row[7]">
+                <input type="hidden" id="user_credits" name="user_credits" value="$userCredits">
 _END;
         if ($row[5]!=$_COOKIE['user']){
         if (in_array($row[0],$imagesOfUser)) {
@@ -78,10 +81,6 @@ _END;
    }
 
 }
-    
-    
-
-
     echo '</div>';
 
     function getImagesOfLoggedInUser($conn, $customerId) {
@@ -103,5 +102,14 @@ _END;
         $resultOfUser->close();
         $customerId = $row[0];
         return $customerId;
+    }
+
+    function getCustomerCredits($conn, $username) {
+        $queryUser = "SELECT credits FROM Customers WHERE username='$username'";
+        $result = $conn->query($queryUser);
+        $row = $result->fetch_array(MYSQLI_NUM);
+        $result->close();
+        $credits = $row[0];
+        return $credits;
     }
 ?>
