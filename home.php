@@ -73,11 +73,10 @@ _END;
         ?>
   </div>
 </nav>
-<div class="jumbotron" style="background-image: url('https://i.pinimg.com/originals/03/10/b8/0310b82f8ade9a5172ab00ea53bb45b3.png');
- background-size: cover; height:100vh">
+<div style="background-image: url('resources/Untitled.jpg'); background-size: cover; height:100vh">
     <div style="margin:auto; text-align: center; position: relative; top: 50%;color: white; ">
-        <h1 class="font-weight-bold text-monospace" style="font-size:52px">Welcome to Pixi</h1>
-        <h4 class="text-monospace">Buy and sell your images</h4>
+        <img class="img-fluid" src="resources/logo.png" style ="height:150px">
+    
     </div>
 </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
